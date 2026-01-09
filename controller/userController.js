@@ -18,9 +18,13 @@ const create = async (req, res) => {
 };
 const fetch = async (req, res) => {
   try {
-    return res.json('Hello World');
+    const users = await User.find();
+    if (users.length === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.status(200).json(users);
   } catch {
     res.status(500).json({ error: 'Internal Server error' });
   }
 };
-module.exports = { fetch };
+module.exports = { fetch, create };
